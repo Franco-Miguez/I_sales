@@ -156,7 +156,7 @@ class Interface(ctk.CTk):
         
         self.sales_list.pack()
 
-        
+        ### total and sale boton
         self.sales_botons_bottom_frame = ctk.CTkFrame(self,
                                                    300,
                                                    80)
