@@ -7,7 +7,7 @@ def create():
     db.connect()
     db.create_tables([Product])
 
-def product_add(name, info, price, stock=0, create=date.today(), update=date.today()):
+def product_add(name, info="", price=0, stock=0, create=date.today(), update=date.today()):
     """add product to datebase whit some defauts variables
 
     Args:
@@ -49,6 +49,12 @@ def product_update(id, name=None, info=None, price=None, stock=None):
 
 def product_delete(id):
     Product.delete().where(Product.product_id == id).execute()
+    
+def product_search(search):
+    return Product.select().where(Product.name.contains(search))
+
+def product_info(id):
+    return Product.select().where(Product.product_id == id).dicts()
 
 
 db = SqliteDatabase("database.db")
