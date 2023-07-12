@@ -10,47 +10,53 @@ from tkinter import messagebox
 from PIL import Image
 import database as db
 
-ctk.set_appearance_mode("dark") 
+ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")
 
+
 class Interface(ctk.CTk):
-    def __init__(self, fg_color = None, **kwargs):
+    def __init__(self, fg_color=None, **kwargs):
         super().__init__(fg_color, **kwargs)
-        ### config window
+        # config window
         self.height = 700
         self.width = 950
         self.geometry(f"{self.width}x{self.height}")
         self.title("I Sales")
-        self.minsize(700,680)
-        
-        ### constant variables
+        self.minsize(700, 680)
+
+        # constant variables
         self.SIZE_BUTON = 40
         self.PADX_BUTON = 20
-        self.TOOL_BAR_SIZE = (500,48)
-        
-        
-        
-        ### Buton Image
-        self.search_image = ctk.CTkImage(dark_image=Image.open("image/icon/search.png"))
-        self.add_image = ctk.CTkImage(dark_image=Image.open("image/icon/plus-circle.png"))
-        self.edit_image = ctk.CTkImage(dark_image=Image.open("image/icon/edit.png"))
-        self.delete_image = ctk.CTkImage(dark_image=Image.open("image/icon/trash.png"))
-        self.dollar_image = ctk.CTkImage(dark_image=Image.open("image/icon/dollar-sign.png"))
-        self.cancel_image = ctk.CTkImage(dark_image=Image.open("image/icon/x-circle.png"))
-        self.minus_image = ctk.CTkImage(dark_image=Image.open("image/icon/minus.png"))
-        
-        ### Stock Tool Bar
+        self.TOOL_BAR_SIZE = (500, 48)
+
+        # Buton Image
+        self.search_image = ctk.CTkImage(
+            dark_image=Image.open("image/icon/search.png"))
+        self.add_image = ctk.CTkImage(
+            dark_image=Image.open("image/icon/plus-circle.png"))
+        self.edit_image = ctk.CTkImage(
+            dark_image=Image.open("image/icon/edit.png"))
+        self.delete_image = ctk.CTkImage(
+            dark_image=Image.open("image/icon/trash.png"))
+        self.dollar_image = ctk.CTkImage(
+            dark_image=Image.open("image/icon/dollar-sign.png"))
+        self.cancel_image = ctk.CTkImage(
+            dark_image=Image.open("image/icon/x-circle.png"))
+        self.minus_image = ctk.CTkImage(
+            dark_image=Image.open("image/icon/minus.png"))
+
+        # Stock Tool Bar
         self.stock_botons_top_frame = ctk.CTkFrame(self,
                                                    self.TOOL_BAR_SIZE[0],
                                                    self.TOOL_BAR_SIZE[1])
         self.stock_botons_top_frame.pack_propagate(False)
         self.stock_botons_top_frame.pack(pady=10)
-        
-        ### Stock Boton
-        
+
+        # Stock Boton
+
         self.search_entry = ctk.CTkEntry(self.stock_botons_top_frame)
         self.search_entry.pack(side="left", padx=self.PADX_BUTON)
-        
+
         self.search_buton = ctk.CTkButton(self.stock_botons_top_frame,
                                           image=self.search_image,
                                           text="",
@@ -59,154 +65,154 @@ class Interface(ctk.CTk):
                                           command=self.product_search
                                           )
         self.search_buton.pack(side="left", padx=self.PADX_BUTON)
-        
+
         self.add_product_buton = ctk.CTkButton(self.stock_botons_top_frame,
-                                          image=self.add_image,
-                                          text="",
-                                          width=self.SIZE_BUTON,
-                                          height=self.SIZE_BUTON,
-                                          fg_color="green3",
-                                          hover_color="green",
-                                          command=self.window_add
-                                          )
+                                               image=self.add_image,
+                                               text="",
+                                               width=self.SIZE_BUTON,
+                                               height=self.SIZE_BUTON,
+                                               fg_color="green3",
+                                               hover_color="green",
+                                               command=self.window_add
+                                               )
         self.add_product_buton.pack(side="left", padx=self.PADX_BUTON)
-        
+
         self.edit_product_buton = ctk.CTkButton(self.stock_botons_top_frame,
-                                          image=self.edit_image,
-                                          text="",
-                                          width=self.SIZE_BUTON,
-                                          height=self.SIZE_BUTON,
-                                          command=self.window_update
-                                          )
+                                                image=self.edit_image,
+                                                text="",
+                                                width=self.SIZE_BUTON,
+                                                height=self.SIZE_BUTON,
+                                                command=self.window_update
+                                                )
         self.edit_product_buton.pack(side="left", padx=self.PADX_BUTON)
-        
+
         self.delete_product_buton = ctk.CTkButton(self.stock_botons_top_frame,
-                                          image=self.delete_image,
-                                          text="",
-                                          width=self.SIZE_BUTON,
-                                          height=self.SIZE_BUTON,
-                                          fg_color="red",
-                                          hover_color="red4",
-                                          command=self.product_delete
-                                          )
+                                                  image=self.delete_image,
+                                                  text="",
+                                                  width=self.SIZE_BUTON,
+                                                  height=self.SIZE_BUTON,
+                                                  fg_color="red",
+                                                  hover_color="red4",
+                                                  command=self.product_delete
+                                                  )
         self.delete_product_buton.pack(side="left", padx=self.PADX_BUTON)
-        
-        ### Stock List
+
+        # Stock List
         self.stock_list = ttk.Treeview(self, columns=(
-                                                        "ID",
-                                                        "Products",
-                                                        "Stock",
-                                                        "Price"
-                                                        ),
-                                       show='headings'
-                                          )
-        
-        
+            "ID",
+            "Products",
+            "Stock",
+            "Price"
+        ),
+            show='headings'
+        )
+
         self.stock_list.column('ID', width=100)
         self.stock_list.heading('ID', text="ID")
-        
+
         self.stock_list.column('Products', width=500)
         self.stock_list.heading('Products', text="Products")
-        
+
         self.stock_list.column('Stock', width=100)
         self.stock_list.heading('Stock', text="Stock")
-        
+
         self.stock_list.column('Price', width=100)
         self.stock_list.heading('Price', text="Price")
-        
+
         self.stock_list.pack()
-        
-        ### Insert producto in stock_list
+
+        # Create the database table
+        db.create()
+        # Insert prodself.insert_product(db.product_list())ucto in stock_list
         self.insert_product(db.product_list())
-        
-        ### Sale Tool Bar 
-        self.sales_botons_top_frame = ctk.CTkFrame(self,
-                                                   250,
-                                                   height=self.TOOL_BAR_SIZE[1])
+
+        # Sale Tool Bar
+        self.sales_botons_top_frame = ctk.CTkFrame( self,
+                                                    250,
+                                                    height=self.TOOL_BAR_SIZE[1])
         self.sales_botons_top_frame.pack_propagate(False)
         self.sales_botons_top_frame.pack(pady=10)
-        
-        ### Sale Boton
+
+        # Sale Boton
         self.add_sale_buton = ctk.CTkButton(self.sales_botons_top_frame,
-                                          image=self.add_image,
-                                          text="",
-                                          width=self.SIZE_BUTON,
-                                          height=self.SIZE_BUTON,
-                                          fg_color="green3",
-                                          hover_color="green",
-                                          command=self.product_add_sale
-                                          )
+                                            image=self.add_image,
+                                            text="",
+                                            width=self.SIZE_BUTON,
+                                            height=self.SIZE_BUTON,
+                                            fg_color="green3",
+                                            hover_color="green",
+                                            command=self.product_add_sale
+                                            )
         self.add_sale_buton.pack(side="left", padx=self.PADX_BUTON)
-        
+
         self.minus_sale_buton = ctk.CTkButton(self.sales_botons_top_frame,
-                                          image=self.minus_image,
-                                          text="",
-                                          width=self.SIZE_BUTON,
-                                          height=self.SIZE_BUTON,
-                                          command=self.product_minus_sale
-                                          )
+                                              image=self.minus_image,
+                                              text="",
+                                              width=self.SIZE_BUTON,
+                                              height=self.SIZE_BUTON,
+                                              command=self.product_minus_sale
+                                              )
         self.minus_sale_buton.pack(side="left", padx=self.PADX_BUTON)
-        
+
         self.delete_sale_buton = ctk.CTkButton(self.sales_botons_top_frame,
-                                          image=self.delete_image,
-                                          text="",
-                                          width=self.SIZE_BUTON,
-                                          height=self.SIZE_BUTON,
-                                          fg_color="red",
-                                          hover_color="red4",
-                                          command=self.product_delete_sale
-                                          )
+                                               image=self.delete_image,
+                                               text="",
+                                               width=self.SIZE_BUTON,
+                                               height=self.SIZE_BUTON,
+                                               fg_color="red",
+                                               hover_color="red4",
+                                               command=self.product_delete_sale
+                                               )
         self.delete_sale_buton.pack(side="left", padx=self.PADX_BUTON)
-        
+
         self.sales_list = ttk.Treeview(self, columns=(
-                                                        "ID",
-                                                        "Products",
-                                                        "Amount",
-                                                        "unitari priece",
-                                                        "Total"
-                                                        ),
-                                       show='headings'
-                                          )
-        
+            "ID",
+            "Products",
+            "Amount",
+            "unitari priece",
+            "Total"
+        ),
+            show='headings'
+        )
+
         self.sales_list.column('ID', width=100)
         self.sales_list.heading('ID', text="ID")
-        
+
         self.sales_list.column('Products', width=500)
         self.sales_list.heading('Products', text="Products")
-        
+
         self.sales_list.column('Amount', width=100)
         self.sales_list.heading('Amount', text="Amount")
-        
+
         self.sales_list.column('unitari priece', width=100)
         self.sales_list.heading('unitari priece', text="unitari priece")
-        
+
         self.sales_list.column('Total', width=100)
         self.sales_list.heading('Total', text="total")
-        
+
         self.sales_list.pack()
 
-        ### total and sale boton
+        # total and sale boton
         self.sales_botons_bottom_frame = ctk.CTkFrame(self,
-                                                   300,
-                                                   80)
+                                                      300,
+                                                      80)
         self.sales_botons_bottom_frame.pack_propagate(False)
         self.sales_botons_bottom_frame.pack(side="bottom", pady=10, padx=200)
-        
+
         self.sales_text_total = ctk.CTkLabel(self.sales_botons_bottom_frame,
-                                        text="Total: $0")
+                                             text="Total: $0")
         self.sales_text_total.cget("font").configure(size=20)
-        
-        
+
         self.sale_buton = ctk.CTkButton(self.sales_botons_bottom_frame,
-                                          image=self.dollar_image,
-                                          text="",
-                                          width=self.SIZE_BUTON,
-                                          height=self.SIZE_BUTON,
-                                          fg_color="green3",
-                                          hover_color="green",
-                                          command=self.sale
-                                          )
-        self.sale_buton.pack(padx=20 , side="left")
+                                        image=self.dollar_image,
+                                        text="",
+                                        width=self.SIZE_BUTON,
+                                        height=self.SIZE_BUTON,
+                                        fg_color="green3",
+                                        hover_color="green",
+                                        command=self.sale
+                                        )
+        self.sale_buton.pack(padx=20, side="left")
         self.sales_text_total.pack(side="left", padx=self.PADX_BUTON)
 
     def insert_product(self, product_dicts):
@@ -217,12 +223,12 @@ class Interface(ctk.CTk):
         """
         for product in product_dicts[:15]:
             data = (
-                    product["product_id"],
-                    product["name"],
-                    product["stock"],
-                    product["price"])
+                product["product_id"],
+                product["name"],
+                product["stock"],
+                product["price"])
             self.stock_list.insert('', ctk.END, values=data)
-    
+
     def product_delete(self):
         """delete product the database and stock_list
         """
@@ -230,61 +236,62 @@ class Interface(ctk.CTk):
         if select_id != "":
             select = self.stock_list.item(select_id)['values']
             delete = messagebox.askquestion("Delete",
-                                f"wants delete product {select[1]}?"
-                                )
+                                            f"wants delete product {select[1]}?"
+                                            )
             if delete == "yes":
                 db.product_delete(select[0])
                 self.stock_list.delete(select_id)
-    
+
     def product_search(self):
         """search product and update stock_list
         """
-        text= self.search_entry.get()
+        text = self.search_entry.get()
         for product in self.stock_list.get_children():
             self.stock_list.delete(product)
-            
+
         for product in db.product_search(text):
             data = (
-                    product.product_id,
-                    product.name,
-                    product.stock,
-                    product.price)
+                product.product_id,
+                product.name,
+                product.stock,
+                product.price)
             self.stock_list.insert('', ctk.END, values=data)
-    
-        
+
     def window_add(self):
         """create window for insert data and add product
         """
         new_window = ctk.CTkToplevel(self)
         new_window.geometry("500x600")
-        new_window.resizable(0,0)
+        new_window.resizable(0, 0)
         new_window.title("Add")
-        
-        name_text = ctk.CTkLabel(master=new_window,text="Name:")
+
+        name_text = ctk.CTkLabel(master=new_window, text="Name:")
         name_text.cget("font").configure(size=20)
         name_text.pack(pady=10)
-        name_entry = ctk.CTkEntry(master=new_window,width=300)
+        name_entry = ctk.CTkEntry(master=new_window, width=300)
         name_entry.pack()
-        
-        info_text = ctk.CTkLabel(master=new_window,text="Info:")
+
+        info_text = ctk.CTkLabel(master=new_window, text="Info:")
         info_text.cget("font").configure(size=20)
         info_text.pack(pady=10)
-        info_entry = ctk.CTkTextbox(master=new_window,height=150,width=300)
+        info_entry = ctk.CTkTextbox(master=new_window, height=150, width=300)
         info_entry.pack()
-        
+
         price_var = ctk.StringVar()
-        price_text = ctk.CTkLabel(master=new_window,text="Price:")
+        price_text = ctk.CTkLabel(master=new_window, text="Price:")
         price_text.cget("font").configure(size=20)
         price_text.pack(pady=10)
-        price_entry = ctk.CTkEntry(master=new_window, width=300, textvariable=price_var)
+        price_entry = ctk.CTkEntry(
+            master=new_window, width=300, textvariable=price_var)
         price_var.set("0.0")
         price_entry.pack()
-        
+
         stock_var = ctk.StringVar()
-        stock_text = ctk.CTkLabel(master=new_window,text="Stock:")
+        stock_text = ctk.CTkLabel(master=new_window, text="Stock:")
         stock_text.cget("font").configure(size=20)
         stock_text.pack(pady=10)
-        stock_entry = ctk.CTkEntry(master=new_window,width=300, textvariable=stock_var)
+        stock_entry = ctk.CTkEntry(
+            master=new_window, width=300, textvariable=stock_var)
         stock_var.set("0")
         stock_entry.pack()
 
@@ -295,16 +302,16 @@ class Interface(ctk.CTk):
                                      text="",
                                      fg_color="green3",
                                      hover_color="green",
-                                     command=lambda:self.product_add(
+                                     command=lambda: self.product_add(
                                          new_window,
                                          name_entry.get(),
-                                         info_entry.get("1.0",ctk.END),
+                                         info_entry.get("1.0", ctk.END),
                                          price_entry.get(),
                                          stock_entry.get(),
-                                        )
-                                    )
+                                     )
+                                     )
         create_boton.pack(side="left", padx=100)
-        
+
         cancel_boton = ctk.CTkButton(master=new_window,
                                      image=self.cancel_image,
                                      width=50,
@@ -325,77 +332,76 @@ class Interface(ctk.CTk):
             select = db.product_info(select[0])
             for x in select:
                 product = [x["product_id"],
-                            x["name"],
-                            x["info"],
-                            x["price"],
-                            x["stock"]
+                           x["name"],
+                           x["info"],
+                           x["price"],
+                           x["stock"]
                            ]
 
-            
             new_window = ctk.CTkToplevel(self)
             new_window.geometry("500x600")
-            new_window.resizable(0,0)
+            new_window.resizable(0, 0)
             new_window.title("Update")
 
-
-            name_text = ctk.CTkLabel(master=new_window,text="Name:")
+            name_text = ctk.CTkLabel(master=new_window, text="Name:")
             name_text.cget("font").configure(size=20)
             name_text.pack(pady=10)
-            name_entry = ctk.CTkEntry(master=new_window,width=300)
-            name_entry.insert(0,product[1])
+            name_entry = ctk.CTkEntry(master=new_window, width=300)
+            name_entry.insert(0, product[1])
             name_entry.pack()
-            
-            info_text = ctk.CTkLabel(master=new_window,text="Info:")
+
+            info_text = ctk.CTkLabel(master=new_window, text="Info:")
             info_text.cget("font").configure(size=20)
             info_text.pack(pady=10)
-            info_entry = ctk.CTkTextbox(master=new_window,height=150,width=300)
-            info_entry.insert(ctk.INSERT,product[2])
+            info_entry = ctk.CTkTextbox(
+                master=new_window, height=150, width=300)
+            info_entry.insert(ctk.INSERT, product[2])
             info_entry.pack()
-            
-            price_text = ctk.CTkLabel(master=new_window,text="Price:")
+
+            price_text = ctk.CTkLabel(master=new_window, text="Price:")
             price_text.cget("font").configure(size=20)
             price_text.pack(pady=10)
             price_entry = ctk.CTkEntry(master=new_window, width=300)
-            price_entry.insert(0,product[3])
+            price_entry.insert(0, product[3])
             price_entry.pack()
-            
-            stock_text = ctk.CTkLabel(master=new_window,text="Stock:")
+
+            stock_text = ctk.CTkLabel(master=new_window, text="Stock:")
             stock_text.cget("font").configure(size=20)
             stock_text.pack(pady=10)
-            stock_entry = ctk.CTkEntry(master=new_window,width=300)
-            stock_entry.insert(0,product[4])
+            stock_entry = ctk.CTkEntry(master=new_window, width=300)
+            stock_entry.insert(0, product[4])
             stock_entry.pack()
 
             create_boton = ctk.CTkButton(master=new_window,
-                                        image=self.add_image,
-                                        width=50,
-                                        height=50,
-                                        text="",
-                                        fg_color="green3",
-                                        hover_color="green",
-                                        command=lambda:self.product_update(
-                                            new_window,
-                                            product[0],
-                                            name_entry.get(),
-                                            info_entry.get("1.0",ctk.END),
-                                            price_entry.get(),
-                                            stock_entry.get(),
-                                            )
-                                        )
+                                         image=self.add_image,
+                                         width=50,
+                                         height=50,
+                                         text="",
+                                         fg_color="green3",
+                                         hover_color="green",
+                                         command=lambda: self.product_update(
+                                             new_window,
+                                             product[0],
+                                             name_entry.get(),
+                                             info_entry.get("1.0", ctk.END),
+                                             price_entry.get(),
+                                             stock_entry.get(),
+                                         )
+                                         )
             create_boton.pack(side="left", padx=100)
-            
+
             cancel_boton = ctk.CTkButton(master=new_window,
-                                        image=self.cancel_image,
-                                        width=50,
-                                        height=50,
-                                        text="",
-                                        fg_color="red",
-                                        hover_color="red4",
-                                        command=new_window.destroy
-                                        )
+                                         image=self.cancel_image,
+                                         width=50,
+                                         height=50,
+                                         text="",
+                                         fg_color="red",
+                                         hover_color="red4",
+                                         command=new_window.destroy
+                                         )
             cancel_boton.pack(side="right", padx=100)
 
-    def product_add(self,window,name,info,price,stock):
+    def product_add(self, window, name, info, price, stock):
         """add product to database
 
         Args:
@@ -407,7 +413,8 @@ class Interface(ctk.CTk):
         """
         save = True
         if name == "":
-            messagebox.showwarning( title="Error",message="Insert Name", parent=window)
+            messagebox.showwarning(
+                title="Error", message="Insert Name", parent=window)
             save = False
         try:
             if price == "":
@@ -415,22 +422,24 @@ class Interface(ctk.CTk):
             else:
                 price = float(price)
         except:
-            messagebox.showwarning(title="Error", message="insert number value in price", parent=window)
+            messagebox.showwarning(
+                title="Error", message="insert number value in price", parent=window)
             save = False
-        
+
         try:
             if stock == "":
                 stock = 0
             else:
                 stock = int(stock)
         except:
-            messagebox.showwarning(title="Error", message="insert number value in stock", parent=window)
+            messagebox.showwarning(
+                title="Error", message="insert number value in stock", parent=window)
             save = False
         if save == True:
-            db.product_add(name,info,price,stock)
+            db.product_add(name, info, price, stock)
             window.destroy()
 
-    def product_update(self,window,id,name,info,price,stock):
+    def product_update(self, window, id, name, info, price, stock):
         """update product for database
 
         Args:
@@ -443,7 +452,8 @@ class Interface(ctk.CTk):
         """
         save = True
         if name == "":
-            messagebox.showwarning( title="Error",message="Insert Name", parent=window)
+            messagebox.showwarning(
+                title="Error", message="Insert Name", parent=window)
             save = False
         try:
             if price == "":
@@ -451,19 +461,21 @@ class Interface(ctk.CTk):
             else:
                 price = float(price)
         except:
-            messagebox.showwarning(title="Error", message="insert number value in price", parent=window)
+            messagebox.showwarning(
+                title="Error", message="insert number value in price", parent=window)
             save = False
-        
+
         try:
             if stock == "":
                 stock = 0
             else:
                 stock = int(stock)
         except:
-            messagebox.showwarning(title="Error", message="insert number value in stock", parent=window)
+            messagebox.showwarning(
+                title="Error", message="insert number value in stock", parent=window)
             save = False
         if save == True:
-            db.product_update(id,name,info,price,stock)
+            db.product_update(id, name, info, price, stock)
             window.destroy()
 
     def product_add_sale(self):
@@ -483,13 +495,13 @@ class Interface(ctk.CTk):
                     self.sales_list.item(id, values=item)
             if not repit:
                 product = [
-                            select[0],
-                            select[1],
-                            1,
-                            select[3],
-                            select[3]
-                        ]
-                self.sales_list.insert('',ctk.END, values=product)
+                    select[0],
+                    select[1],
+                    1,
+                    select[3],
+                    select[3]
+                ]
+                self.sales_list.insert('', ctk.END, values=product)
             self.update_total()
 
     def product_minus_sale(self):
@@ -506,7 +518,7 @@ class Interface(ctk.CTk):
                 item[4] = float(item[2]) * float(item[3])
                 self.sales_list.item(select_id, values=item)
             self.update_total()
-                
+
     def product_delete_sale(self):
         """delte product selection in the sales list
         """
@@ -514,8 +526,8 @@ class Interface(ctk.CTk):
         if select_id != "":
             select = self.sales_list.item(select_id)['values']
             delete = messagebox.askquestion("Delete",
-                                f"wants delete product {select[1]} in sale?"
-                                )
+                                            f"wants delete product {select[1]} in sale?"
+                                            )
             if delete == "yes":
                 self.sales_list.delete(select_id)
                 self.update_total()
@@ -536,28 +548,28 @@ class Interface(ctk.CTk):
         if len(id_sale) > 0:
             new_window = ctk.CTkToplevel(self)
             new_window.geometry("300x200")
-            new_window.resizable(0,0)
+            new_window.resizable(0, 0)
             new_window.title("Pay")
-            
-            pay_text = ctk.CTkLabel(new_window,text="Pay with:")
+
+            pay_text = ctk.CTkLabel(new_window, text="Pay with:")
             pay_text.pack(pady=10)
             pay_entry = ctk.CTkEntry(new_window)
             pay_entry.pack(pady=10)
-            
+
             pay_boton = ctk.CTkButton(master=new_window,
-                                     image=self.dollar_image,
-                                     width=50,
-                                     height=50,
-                                     text="",
-                                     fg_color="green3",
-                                     hover_color="green",
-                                     command=lambda:self.pay(id_sale,
-                                                             pay_entry.get(),
-                                                             new_window)
-                                     )
+                                      image=self.dollar_image,
+                                      width=50,
+                                      height=50,
+                                      text="",
+                                      fg_color="green3",
+                                      hover_color="green",
+                                      command=lambda: self.pay(id_sale,
+                                                               pay_entry.get(),
+                                                               new_window)
+                                      )
             pay_boton.pack(pady=10)
-        
-    def pay(self,id_list,pay,window):
+
+    def pay(self, id_list, pay, window):
         """show turned, delete item in sales list and update database
 
         Args:
@@ -567,28 +579,27 @@ class Interface(ctk.CTk):
         """
         window.destroy()
         for id in id_list:
-            item =self.sales_list.item(id)["values"]
+            item = self.sales_list.item(id)["values"]
             for item_db in db.product_info(item[0]):
                 if item_db["stock"] < item[2]:
-                    db.product_update(item[0],stock=0)
+                    db.product_update(item[0], stock=0)
                 else:
-                    db.product_update(item[0],stock=item_db["stock"]-item[2])
-                
+                    db.product_update(item[0], stock=item_db["stock"]-item[2])
+
             self.sales_list.delete(id)
 
         new_window = ctk.CTkToplevel(self)
         new_window.geometry("300x200")
         new_window.title("Result")
-        
+
         result = float(pay)-float(self.total)
         result = "{:,}".format(result)
-        text_reslut = ctk.CTkLabel(new_window,text=result)
+        text_reslut = ctk.CTkLabel(new_window, text=result)
         text_reslut.cget("font").configure(size=25)
         text_reslut.pack(pady=40)
         self.update_total()
         self.product_search()
-        
-            
+
 
 if __name__ == "__main__":
     app = Interface()
